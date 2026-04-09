@@ -22,7 +22,8 @@ st.markdown("""
     
     /* 第一行：代號、名稱、市場 */
     .line-1 {
-        font-size: 1.8rem; /* 與原股價大小一致 */
+        * font-size: 1.8rem;  與原股價大小一致 */
+        font-size: 1rem; /* 與原股價大小一致 */
         font-weight: bold;
         color: #FFFFFF;
         display: flex;
@@ -41,7 +42,8 @@ st.markdown("""
     
     /* 第二行：價格、漲跌 */
     .line-2 {
-        font-size: 1.8rem; /* 與原股價大小一致 */
+        /* font-size: 1.8rem; 與原股價大小一致 */
+        font-size: 1rem; /* 與原股價大小一致 */
         font-weight: bold;
         font-family: 'Consolas', monospace;
     }
