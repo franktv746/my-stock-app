@@ -87,8 +87,7 @@ if data:
                 label=label_text,
                 value=f"{s['price']:.2f}",
                 delta=f"{s['change']:+.2f} ({s['pct']:+.2f}%)",
-#                 delta_color="normal" if s['change'] > 0 else "inverse"
-                delta_color="inverse" if s['change'] > 0 else "normal"
+                delta_color="normal" if s['change'] > 0.00 else "inverse"
             )
 else:
     st.error("暫無數據，請確認代號或交易時間。")
