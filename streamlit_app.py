@@ -1,0 +1,82 @@
+import streamlit as st
+import yfinance as yf
+import twstock
+import pandas as pd
+import time
+
+# --- 網頁配置 ---
+st.set_page_config(page_title="我的台股監控", page_icon="📈")
+
+# 自定義 CSS 讓手機版顯示更精緻
+st.markdown("""
+    <style>
+    [data-testid="stMetricValue"] { font-size: 1.8rem; }
+    .stMetric { background-color: #262730; padding: 15px; border-radius: 10px; border-left: 5px solid #444; }
+    </style>
+""", unsafe_allow_html=True)
+
+# 1. 你的自選股名單 (只需輸入代號)
+WATCHLIST = ["2330", "2317", "2454", "8069", "6488", "3131", "2881"]
+
+@st.cache_data(ttl=55) # 快取 55 秒，避免過度請求
+def fetch_stock_data(ids):
+    results = []
+    for s_id in ids:
+        # 自動判斷市場字尾
+        if s_id in twstock.twse:
+            ticker, market = f"{s_id}.TW", "上市"
+        elif s_id in twstock.tpex:
+            ticker, market = f"{s_id}.TWO", "上櫃"
+        else:
+            continue
+            
+        try:
+            stock = yf.Ticker(ticker)
+            info = twstock.codes.get(s_id)
+            fast = stock.fast_info
+            
+            price = fast['last_price']
+            prev_close = fast['previous_close']
+            change = price - prev_close
+            pct = (change / prev_close) * 100
+            
+            results.append({
+                "id": s_id,
+                "name": info.name,
+                "market": market,
+                "price": price,
+                "change": change,
+                "pct": pct
+            })
+        except:
+            pass
+    return results
+
+# --- 介面呈現 ---
+st.title("📈 台股即時監控")
+st.caption(f"數據每分鐘自動更新 | 最後更新：{time.strftime('%H:%M:%S')}")
+
+data = fetch_stock_data(WATCHLIST)
+
+# 使用 columns 進行排版 (手機上會自動堆疊)
+if data:
+    cols = st.columns(2)
+    for i, s in enumerate(data):
+        with cols[i % 2]:
+            # 💡 這裡有個小眉角：st.metric 的 delta_color="normal" 是「綠漲紅跌」(美股模式)
+            # 在台灣我們需要手動判斷或反轉
+            label_text = f"{s['name']} ({s['id']}) {s['market']}"
+            
+            st.metric(
+                label=label_text,
+                value=f"{s['price']:.2f}",
+                delta=f"{s['change']:+.2f} ({s['pct']:+.2f}%)",
+                delta_color="normal" if s['change'] > 0 else "inverse" 
+            )
+else:
+    st.error("暫無數據，請確認代號或交易時間。")
+
+# --- 自動刷新邏輯 ---
+# 這是 Streamlit 的黑科技，讓網頁在倒數後自動重跑
+time.sleep(60)
+st.rerun()
