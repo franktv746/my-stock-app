@@ -83,11 +83,19 @@ if data:
             # 在台灣我們需要手動判斷或反轉
             label_text = f"{s['name']} ({s['id']}) {s['market']}"
             
+            # 判斷漲跌
+            if s['change'] > 0:
+                d_color = "inverse"  # 漲 -> 顯示紅色
+            elif s['change'] < 0:
+                d_color = "inverse"  # 跌 -> 顯示綠色
+            else:
+                d_color = "off"      # 平盤 -> 顯示灰色
+                
             st.metric(
                 label=label_text,
                 value=f"{s['price']:.2f}",
                 delta=f"{s['change']:+.2f} ({s['pct']:+.2f}%)",
-                delta_color="normal" if s['change'] > 0.00 else "inverse"
+                delta_color=d_color
             )
 else:
     st.error("暫無數據，請確認代號或交易時間。")
