@@ -76,9 +76,11 @@ data = fetch_stock_data(WATCHLIST)
 
 # 使用 columns 進行排版 (手機上會自動堆疊)
 if data:
-    cols = st.columns(2)
+    # cols = st.columns(2)
+    cols = st.columns(3)
     for i, s in enumerate(data):
-        with cols[i % 2]:
+        # with cols[i % 2]:
+        with cols[i % 3]:
             # 💡 這裡有個小眉角：st.metric 的 delta_color="normal" 是「綠漲紅跌」(美股模式)
             # 在台灣我們需要手動判斷或反轉
             label_text = f"{s['name']} ({s['id']}) {s['market']}"
