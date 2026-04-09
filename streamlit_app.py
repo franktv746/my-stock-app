@@ -15,39 +15,10 @@ def get_tw_time():
 st.set_page_config(page_title="我的台股監控", page_icon="📈")
 
 # 自定義 CSS 讓手機版顯示更精緻
-# st.markdown("""
-    # <style>
-    # [data-testid="stMetricValue"] { font-size: 1.8rem; }
-    # .stMetric { background-color: #262730; padding: 15px; border-radius: 10px; border-left: 5px solid #444; }
-    # </style>
-# """, unsafe_allow_html=True)
-
-# --- 🚀 強制手機版顯示兩欄的 CSS ---
 st.markdown("""
     <style>
-    /* 強制 columns 在手機上不堆疊，維持並排 */
-    [data-testid="column"] {
-        width: calc(50% - 1rem) !important;
-        flex: 1 1 calc(50% - 1rem) !important;
-        min-width: calc(50% - 1rem) !important;
-    }
-    
-    /* 微調手機版字體大小，避免溢出 */
-    [data-testid="stMetricValue"] {
-        font-size: 1.4rem !important; 
-    }
-    [data-testid="stMetricLabel"] {
-        font-size: 0.85rem !important;
-    }
-    
-    /* 修飾卡片外框 */
-    .stMetric {
-        background-color: #262730;
-        padding: 10px;
-        border-radius: 8px;
-        border-left: 4px solid #444;
-        margin-bottom: 10px;
-    }
+    [data-testid="stMetricValue"] { font-size: 1.8rem; }
+    .stMetric { background-color: #262730; padding: 15px; border-radius: 10px; border-left: 5px solid #444; }
     </style>
 """, unsafe_allow_html=True)
 
