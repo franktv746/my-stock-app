@@ -105,18 +105,21 @@ st.caption(f"最後更新：{get_tw_time()} (台灣時間)")
 data = fetch_stock_data(WATCHLIST)
 
 if data:
+    cols = st.columns(2)
+    
     for s in data:
-        # 使用 Markdown 渲染自定義 HTML
-        st.markdown(f"""
-            <div class="stock-card">
-                <div class="line-1">
-                    {s['id']} {s['name']} <span class="market-tag">{s['market']}</span>
+        with cols[i % 2]:
+            # 使用 Markdown 渲染自定義 HTML
+            st.markdown(f"""
+                <div class="stock-card">
+                    <div class="line-1">
+                        {s['id']} {s['name']} <span class="market-tag">{s['market']}</span>
+                    </div>
+                    <div class="line-2 {s['color']}">
+                        {s['price']:.2f} &nbsp; {s['symbol']}{s['change']:.2f} ({s['symbol']}{s['pct']:.2f}%)
+                    </div>
                 </div>
-                <div class="line-2 {s['color']}">
-                    {s['price']:.2f} &nbsp; {s['symbol']}{s['change']:.2f} ({s['symbol']}{s['pct']:.2f}%)
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 else:
     st.error("暫無數據，請確認交易時間。")
 
