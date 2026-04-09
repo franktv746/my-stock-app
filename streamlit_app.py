@@ -107,7 +107,8 @@ data = fetch_stock_data(WATCHLIST)
 if data:
     cols = st.columns(2)
     
-    for s in data:
+    # for s in data:
+    for i, s in enumerate(data):
         with cols[i % 2]:
             # 使用 Markdown 渲染自定義 HTML
             st.markdown(f"""
