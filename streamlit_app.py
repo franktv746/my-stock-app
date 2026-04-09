@@ -3,6 +3,13 @@ import yfinance as yf
 import twstock
 import pandas as pd
 import time
+from datetime import datetime, timedelta, timezone
+
+# --- 1. 時間處理函數 ---
+def get_tw_time():
+    # 建立 UTC+8 時區物件
+    tw_tz = timezone(timedelta(hours=8))
+    return datetime.now(tw_tz).strftime('%H:%M:%S')
 
 # --- 網頁配置 ---
 st.set_page_config(page_title="我的台股監控", page_icon="📈")
@@ -56,8 +63,14 @@ def fetch_stock_data(ids):
     return results
 
 # --- 介面呈現 ---
+# --- 3. 介面呈現 ---
 st.title("📈 台股即時監控")
-st.caption(f"數據每分鐘自動更新 | 最後更新：{time.strftime('%H:%M:%S')}")
+# 使用剛剛定義的台灣時間
+st.caption(f"伺服器位置：雲端中心 | 最後更新時間：{get_tw_time()} (台灣時間)")
+
+
+# st.title("📈 台股即時監控")
+# st.caption(f"數據每分鐘自動更新 | 最後更新：{time.strftime('%H:%M:%S')}")
 
 data = fetch_stock_data(WATCHLIST)
 
