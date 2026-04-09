@@ -26,9 +26,8 @@ st.markdown("""
 # WATCHLIST = ["2330", "2317", "2454", "8069", "6488", "3131", "2881"]
 WATCHLIST = ["3294", "3481", "2634", "6189", "3605", "2834", "2317", "4114", "6122", "2884", "3290", "1519"]
 
-
-
 @st.cache_data(ttl=55) # 快取 55 秒，避免過度請求
+
 def fetch_stock_data(ids):
     results = []
     for s_id in ids:
@@ -76,11 +75,9 @@ data = fetch_stock_data(WATCHLIST)
 
 # 使用 columns 進行排版 (手機上會自動堆疊)
 if data:
-    # cols = st.columns(2)
-    cols = st.columns(3)
+    cols = st.columns(2)
     for i, s in enumerate(data):
-        # with cols[i % 2]:
-        with cols[i % 3]:
+        with cols[i % 2]:
             # 💡 這裡有個小眉角：st.metric 的 delta_color="normal" 是「綠漲紅跌」(美股模式)
             # 在台灣我們需要手動判斷或反轉
             label_text = f"{s['name']} ({s['id']}) {s['market']}"
